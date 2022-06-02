@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AuthenticationService.Interfaces;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AuthenticationService.Controllers
 {
@@ -6,13 +8,20 @@ namespace AuthenticationService.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
+        private IMapper _mapper;
         private ILogger _logger;
-        public UserController(ILogger logger)
+        private IUserRepository _userRepository;
+        public UserController(ILogger logger, IMapper mapper, IUserRepository userRepository)
         {
             _logger = logger;
+            _mapper = mapper;
+
+            _userRepository = userRepository;
 
             _logger.WriteEvent("Сообщение о событии в программе");
             _logger.WriteError("Сообщение об ошибки в программе");
+
+
 
         }
 
@@ -44,7 +53,8 @@ namespace AuthenticationService.Controllers
                 Login = "ivanov"
             };
 
-            UserViewModel userViewModel = new UserViewModel(user);
+            var userViewModel = _mapper.Map<UserViewModel>(user);
+           // UserViewModel userViewModel = new UserViewModel(user);
 
             return userViewModel;
         }

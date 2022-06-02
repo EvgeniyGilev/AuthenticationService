@@ -1,4 +1,4 @@
-﻿namespace AuthenticationService
+﻿namespace AuthenticationService.Interfaces
 {
     public interface ILogger
     {

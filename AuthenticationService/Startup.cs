@@ -10,6 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using AuthenticationService.Interfaces;
+using ILogger = AuthenticationService.Interfaces.ILogger;
 
 namespace AuthenticationService
 {
@@ -26,6 +29,18 @@ namespace AuthenticationService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<ILogger, Logger>();
+
+            services.AddSingleton<IUserRepository, UserRepository>();
+
+            var mapperConfig = new MapperConfiguration((v) =>
+            {
+                v.AddProfile(new MappingProfile());
+            }
+            );
+
+            IMapper mapper = mapperConfig.CreateMapper();
+
+            services.AddSingleton(mapper);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
